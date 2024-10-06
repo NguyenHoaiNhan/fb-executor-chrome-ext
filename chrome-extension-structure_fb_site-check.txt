@@ -1,0 +1,132 @@
+project-root/
+│
+├── manifest.json
+├── background.js
+├── content.js
+├── popup/
+│   ├── popup.html
+│   ├── popup.js
+│   └── popup.css
+├── images/
+│   ├── icon16.png
+│   ├── icon48.png
+│   └── icon128.png
+├── styles/
+│   └── content.css
+├── lib/
+│   └── (for any third-party libraries)
+└── .gitignore
+
+// manifest.json
+{
+  "manifest_version": 2,
+  "name": "Auto-Click Extension",
+  "version": "1.0",
+  "description": "Automatically clicks and submits forms on a specific website",
+  "permissions": [
+    "activeTab",
+    "https://specific-website.com/*"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://specific-website.com/*"],
+      "js": ["content.js"],
+      "css": ["styles/content.css"]
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}
+
+// background.js
+chrome.runtime.onInstalled.addListener(function() {
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+    chrome.declarativeContent.onPageChanged.addRules([{
+      conditions: [new chrome.declarativeContent.PageStateMatcher({
+        pageUrl: {hostEquals: 'specific-website.com'},
+      })],
+      actions: [new chrome.declarativeContent.ShowPageAction()]
+    }]);
+  });
+});
+
+// content.js
+function autoClickAndSubmit() {
+  // Example: Click a button with id 'submit-button'
+  const button = document.getElementById('submit-button');
+  if (button) {
+    button.click();
+  }
+
+  // Example: Fill a form field
+  const inputField = document.getElementById('input-field');
+  if (inputField) {
+    inputField.value = 'Auto-filled text';
+  }
+
+  // Example: Submit a form
+  const form = document.getElementById('target-form');
+  if (form) {
+    form.submit();
+  }
+}
+
+// Run the function when the page is fully loaded
+window.addEventListener('load', autoClickAndSubmit);
+
+// popup/popup.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auto-Click Extension</title>
+  <link rel="stylesheet" type="text/css" href="popup.css">
+</head>
+<body>
+  <h1>Auto-Click Extension</h1>
+  <button id="toggleButton">Toggle Auto-Click</button>
+  <script src="popup.js"></script>
+</body>
+</html>
+
+// popup/popup.js
+document.getElementById('toggleButton').addEventListener('click', function() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {action: "toggle"});
+  });
+});
+
+// popup/popup.css
+body {
+  width: 300px;
+  padding: 10px;
+}
+
+h1 {
+  font-size: 18px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+// styles/content.css
+/* Add any custom styles for your content script here */
+
+// .gitignore
+node_modules/
+.DS_Store
