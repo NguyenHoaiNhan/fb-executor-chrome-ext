@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "FB Executor Ext",
+  "version": "1.0",
+  "description": "Automatically clicks and submits forms on any website",
+  "permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/content.css"]
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "images/daudau_logo.jpg",
+      "48": "images/daudau_logo.jpg",
+      "128": "images/daudau_logo.jpg"
+    }
+  },
+  "icons": {
+    "16": "images/daudau_logo.jpg",
+    "48": "images/daudau_logo.jpg",
+    "128": "images/daudau_logo.jpg"
+  }
+}
