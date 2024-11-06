@@ -1,18 +1,22 @@
-document.getElementById('toggleButton').addEventListener('click', function () {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { action: "toggle" }, response => {
-            window.alert(response.data.toString());
-            if (chrome.runtime.lastError || re || response.data.type === 'Error') {
-                displayResult(chrome.runtime.lastError.message || re)
-                return;
-            }
-
-            if (response) {
-                displayResult(response);
-            }
-        });
-    });
+document.getElementById('toggleButton').addEventListener('click', async function () {
+    // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    //     chrome.tabs.sendMessage(tabs[0].id, { type: "getText" }, function (response) {
+    //         // displayResult(response)
+    //         window.alert(response);
+    //     });
+    // });
+    // (async () => {
+    //     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    //     const response = await chrome.tabs.sendMessage(tab.id, { type: "getText" });
+    //     // do something with response here, not outside the function
+    //     console.log(response);
+    // })();
+    await openNewTab('https://facebook.com');
 });
+
+async function openNewTab(url) {
+    await chrome.tabs.create({ url });
+}
 
 function displayResult(msg) {
     var errorMsg = document.createElement("p");

@@ -4,7 +4,12 @@
   "version": "1.0",
   "description": "Automatically clicks and submits forms on any website",
   "permissions": [
-    "<all_urls>"
+    "<all_urls>",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
   ],
   "background": {
     "scripts": ["background.js"],
@@ -20,14 +25,14 @@
   "browser_action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
-      "16": "images/daudau_logo.jpg",
-      "48": "images/daudau_logo.jpg",
-      "128": "images/daudau_logo.jpg"
+      "16": "images/baby.png",
+      "32": "images/baby.png",
+      "48": "images/baby.png"
     }
   },
   "icons": {
-    "16": "images/daudau_logo.jpg",
-    "48": "images/daudau_logo.jpg",
-    "128": "images/daudau_logo.jpg"
+    "16": "images/baby.png",
+    "48": "images/baby.png",
+    "128": "images/baby.png"
   }
 }
